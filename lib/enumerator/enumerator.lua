@@ -2,24 +2,6 @@
 local class = require '30log'
 
 
-function iter_next(e, i)
-    if e.length and i + 1 > e.length then
-        return
-    end
-
-    local next = { e:next() }
-    local status = table.remove(next, 1)
-    local args = next
-
-    if status then
-        return table.unpack(args)
-    end
-end
-
-function iter(e)    
-    return iter_next, e, 0
-end
-
 local enumerator = class()
 function enumerator:__init(source, length)
     assert(type(source) == 'table' or type(source) == 'function')
@@ -64,27 +46,24 @@ function enumerator:take(n)
     return enumerator(self.source, n)
 end
 
+function iter_next(e, i)
+    if e.length and i + 1 > e.length then
+        return
+    end
 
-local s = function() 
-    coroutine.yield(1)
-    coroutine.yield(2)
-    coroutine.yield(3)
-    coroutine.yield(4)
+    local next = { e:next() }
+    local status = table.remove(next, 1)
+    local args = next
+
+    if status then
+        return table.unpack(args)
+    end
 end
 
-local e = enumerator(s)
-local e_skipped = e:skip(2)
-local e_short = e:take(2)
-
-print('last two')
-for k, v in iter(e_skipped) do
-    print(k, v)
+function iter(e)    
+    return iter_next, e, 0
 end
 
-print('first two')
-for k, v in iter(e_short) do
-    print(k, v)
-end
 
 return {
     iter = iter,
