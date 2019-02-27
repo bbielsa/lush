@@ -1,4 +1,4 @@
-lcal uv = require('luv')
+local uv = require('luv')
 
 function spy(...)
     print(...)
