@@ -1,9 +1,4 @@
-local iter = require('enumerator').iter
-local enumerator = require('enumerator').enumerator
-
-
 return {
-    iter = iter,
-    enumerator = enumerator
+    iter = require('enumerator').iter,
+    enumerator = require('enumerator').enumerator
 }
-
