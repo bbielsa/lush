@@ -14,6 +14,6 @@ uv.fs_scandir('/', function(err, req)
 
         next = spy(uv.fs_scandir_next(req))
     end
-end)
+end
 
 uv.run('default')
