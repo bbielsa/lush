@@ -51,31 +51,32 @@ function enumerator:skip(n)
     for i = 1, n do 
         new:next()
     end
+
+    return new
 end
 
 function enumerator:take(n)
 
 end
 
+
 local s = function() 
-    coroutine.yield(1, 'hi')
+    coroutine.yield(1)
     coroutine.yield(2)
     coroutine.yield(3)
     coroutine.yield(4)
 end
 
--- local s = function()
---     local i = 0
-
---     while true do
---         coroutine.yield(math.sin(i))
---         i = i + math.pi / 4
---     end
--- end
--- s = {'a', 'b', 'c', 'd'}
-
 local e = enumerator(s)
+local e_skipped = e:skip(2)
 
-for k, v in iter(e) do
+for k, v in iter(e_skipped) do
     print(k, v)
 end
+
+
+return {
+    iter = iter,
+    enumerator = enumerator
+}
+
