@@ -2,21 +2,18 @@
 local class = require '30log'
 
 
-function iter_next(g, i)
-    local status, v = coroutine.resume(g)
+function iter_next(e, i)
+    local next = { e:next() }
+    local status = table.remove(next, 1)
+    local args = next
 
-    if status and v then
-        i = i + 1
-
-        return i, v
+    if status then
+        return table.unpack(args)
     end
 end
 
 function iter(e)    
-    local f = e.source
-    local g = coroutine.create(f)
-
-    return iter_next, g, 0
+    return iter_next, e, 0
 end
 
 local enumerator = class()
@@ -30,6 +27,8 @@ function enumerator:__init(source)
     else
         self.source = enumerator.wrap(source)
     end
+
+    self.generator = coroutine.create(self.source)
 end
 
 function enumerator.wrap(t)
@@ -42,29 +41,41 @@ function enumerator.wrap(t)
     end
 end
 
-function enumerator:next()
-    print('next called')
+function enumerator:next(i)
+    return coroutine.resume(self.generator)
 end
 
 function enumerator:skip(n) 
+    local new = enumerator(self.source)
 
+    for i = 1, n do 
+        new:next()
+    end
 end
 
 function enumerator:take(n)
 
 end
 
--- local s = function() 
---     coroutine.yield(1)
---     coroutine.yield(2)
---     coroutine.yield(3)
---     coroutine.yield(4)
--- end
+local s = function() 
+    coroutine.yield(1, 'hi')
+    coroutine.yield(2)
+    coroutine.yield(3)
+    coroutine.yield(4)
+end
 
-s = {1, 2, 3, 4}
+-- local s = function()
+--     local i = 0
+
+--     while true do
+--         coroutine.yield(math.sin(i))
+--         i = i + math.pi / 4
+--     end
+-- end
+-- s = {'a', 'b', 'c', 'd'}
 
 local e = enumerator(s)
 
-for k, n in iter(e) do
-    print(n)
+for k, v in iter(e) do
+    print(k, v)
 end
