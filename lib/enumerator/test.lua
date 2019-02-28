@@ -1,4 +1,3 @@
-
 local class = require '30log'
 
 
@@ -64,16 +63,13 @@ function iter(e)
     return iter_next, e, 0
 end
 
-function enumerator:map(f)
-    return enumerator(function()
-        for k, v in iter(self) do
-            coroutine.yield(k, f(v))
-        end
-    end)
+local array = enumerator({1,2,3})
+
+for k in iter(array) do
+  print(k)
 end
 
 return {
     iter = iter,
     enumerator = enumerator
 }
-
