@@ -10,3 +10,4 @@ lush is not yet ready to use. Sit tight!
 |------------|-----------------|
 | luv        | `>= 1.25.0-0`   |
 | busted     | `>= 2.0.rc13-0` |
+| readline   | `>= 2.5-0`      |
