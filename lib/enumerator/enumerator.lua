@@ -45,6 +45,14 @@ function enumerator:take(n)
     return enumerator(self.source, n)
 end
 
+function enumerator:map(f)
+    return enumerator(function()
+        for k, v in iter(self) do
+            coroutine.yield(k, f(v))
+        end
+    end)
+end
+
 function iter_next(e, i)
     if e.length and i + 1 > e.length then
         return
@@ -63,13 +71,6 @@ function iter(e)
     return iter_next, e, 0
 end
 
-function enumerator:map(f)
-    return enumerator(function()
-        for k, v in iter(self) do
-            coroutine.yield(k, f(v))
-        end
-    end)
-end
 
 return {
     iter = iter,
