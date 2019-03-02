@@ -53,6 +53,16 @@ function enumerator:map(f)
     end)
 end
 
+function enumerator:totable()
+    local t = {}
+
+    for k, v in iter(self) do
+        t[k] = v
+    end
+
+    return t
+end
+
 function iter_next(e, i)
     if e.length and i + 1 > e.length then
         return
