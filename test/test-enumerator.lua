@@ -59,4 +59,13 @@ describe('Enumerators', function()
 
         assert.are.same({2, 4, 6, 8}, t)
     end)
+
+    it('should return a new enumerator after skipping some items', function()
+        local e = enumerator({1, 2, 3, 4})
+        local s = e:skip(3)
+
+        local t = s:totable()
+
+        assert.are.same({4}, t)
+    end)
 end)
