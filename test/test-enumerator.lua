@@ -11,6 +11,8 @@ describe('Enumerators', function()
         local i = 1
 
         for k, v in iter(e) do
+            print(k, v)
+            
             assert.are.same(i, v)
 
             i = i + 1
@@ -26,7 +28,7 @@ describe('Enumerators', function()
         local e = enumerator(g)
         local i = 1
 
-        for v in iter(e) do
+        for k, v in iter(e) do
             assert.are.same(i, v)
 
             i = i + 1
@@ -67,5 +69,15 @@ describe('Enumerators', function()
         local t = s:totable()
 
         assert.are.same({4}, t)
+    end)
+
+    it('should filter items to a new enumerator', function()
+        local e = enumerator({1, 2, 3, 4, 5, 6})
+        local evens = function(v) return math.fmod(v, 2) == 0 end
+        local f = e:filter(evens)
+
+        local t = f:totable()
+
+        assert.are.same({2, 4, 6}, t)
     end)
 end)

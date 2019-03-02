@@ -22,7 +22,7 @@ function enumerator.wrap(t)
 
     return function() 
         for k, v in ipairs(t) do
-            coroutine.yield(k, v)
+            coroutine.yield(v)
         end
     end
 end
@@ -48,7 +48,17 @@ end
 function enumerator:map(f)
     return enumerator(function()
         for k, v in iter(self) do
-            coroutine.yield(k, f(v))
+            coroutine.yield(f(v))
+        end
+    end)
+end
+
+function enumerator:filter(f)
+    return enumerator(function()
+        for k, v in iter(self) do
+            if f(v) then
+                coroutine.yield(v)
+            end
         end
     end)
 end
@@ -71,9 +81,10 @@ function iter_next(e, i)
     local next = { e:next() }
     local status = table.remove(next, 1)
     local args = next
+    local k = i + 1
 
     if status then
-        return table.unpack(args)
+        return k, table.unpack(args)
     end
 end
 
