@@ -1,0 +1,3 @@
+[submodule "deps/lua"]
+	path = deps/lua
+	url = https://github.com/lua/lua.git
