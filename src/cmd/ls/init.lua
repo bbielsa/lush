@@ -1,19 +1,24 @@
 local uv = require('luv')
+local enumerator = require('enumerator').enumerator
 
-function spy(...)
-    print(...)
 
-    return ...
-end
+local getfiles = function()    
+    local req = uv.fs_scandir('/')
 
-uv.fs_scandir('/', function(err, req) 
-    local next = uv.fs_scandir_next(req)
+    local name, node_type = uv.fs_scandir_next(req)
 
-    while next do
-        print(next)
-
-        next = spy(uv.fs_scandir_next(req))
+    while name do
+        coroutine.yield(name, node_type)
+        
+        name, node_type = uv.fs_scandir_next(req)
     end
 end
 
-uv.run('default')
+local cmd = function()
+    return enumerator(getfiles)    
+end
+
+
+return {
+    cmd = cmd
+}
