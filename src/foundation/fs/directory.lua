@@ -1,6 +1,8 @@
+local fs = require('foundation.fs').fs
 
 
-function entries
+function entries(path)
+end
 
 
 return {
