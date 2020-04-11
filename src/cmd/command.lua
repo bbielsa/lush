@@ -16,9 +16,20 @@ local command = class()
 command:with(param)
 
 function command:init(values)
-    self.values = values
+    self.values = values or {}
 
+    self:default()
     self:validate()
+end
+
+function command:default()
+    if not self.params then
+        return
+    end
+
+    for k, param in ipairs(self.params) do
+        self.values[param.name] = self.values[param.name] or param.default
+    end
 end
 
 function command:validate()
@@ -26,12 +37,16 @@ function command:validate()
         return true
     end
 
-    for i, param in ipairs(self.params) do
-        local value = self.values[param.name] or param.default
+    for k, param in ipairs(self.params) do
+        local value = self.values[param.name]
         local expectedtype = param.type
 
         assert(type(value) == expectedtype)
+
+        self.values[param.name] = value
     end
 end
 
+
 return command
+
