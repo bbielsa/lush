@@ -7,12 +7,10 @@ local fs = require('foundation.fs')
 
 
 local entries = fs.scandir('/')
-    :filter(function(name) return name:find("^s") end)
-    :skip(1)
-    :take(3)
+    :map(function(p) return fs.stat('/' .. p) end)
 
-for i, name in iter(entries) do
-    print(name)
+for i, entry in iter(entries) do
+    print(entry.path, entry.size)
 end
 
 uv.run('default')
