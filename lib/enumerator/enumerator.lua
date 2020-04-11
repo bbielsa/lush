@@ -85,6 +85,10 @@ function iter_next(e, i)
     local args = next
     local k = i + 1
 
+    if not e.length and coroutine.status(e.generator) == 'dead' then
+        return
+    end
+    
     if status then
         return k, table.unpack(args)
     end
