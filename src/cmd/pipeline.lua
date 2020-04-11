@@ -11,10 +11,3 @@ function pipeline:execute(context)
         command:process(context)
     end
 end
-
-
-local command = class()
-function command:init()
-
-end
-
