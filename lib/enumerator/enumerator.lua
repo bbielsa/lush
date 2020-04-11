@@ -4,7 +4,7 @@ local class = require '30log'
 yield = coroutine.yield
 
 local enumerator = class()
-function enumerator:__init(source, length)
+function enumerator:init(source, length)
     assert(type(source) == 'table' or type(source) == 'function')
 
     local source_type = type(source)

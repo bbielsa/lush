@@ -2,7 +2,7 @@ local class = require('30log')
 
 
 local pipeline = class()
-function pipeline:__init(commands)
+function pipeline:init(commands)
     self.commands = commands
 end
 
@@ -14,7 +14,7 @@ end
 
 
 local command = class()
-function command:__init()
+function command:init()
 
 end
 

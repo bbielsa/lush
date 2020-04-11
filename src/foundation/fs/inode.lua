@@ -2,7 +2,7 @@ local class = require('30log')
 
 
 local inode = class()
-function inode:__init(nodepath, args)
+function inode:init(nodepath, args)
     self.path = nodepath
     
     -- stat info
