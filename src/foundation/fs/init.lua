@@ -3,6 +3,12 @@ local enumerator = require('enumerator').enumerator
 local uv = require('luv')
 
 
+function stat(path)
+    nodeinfo = uv.fs_stat(path)
+    
+    return inode(path, nodeinfo)
+end
+
 function scandir(path)
     local source = function()
         local req = uv.fs_scandir(path)
@@ -23,6 +29,9 @@ end
 return {
     inode = inode,
 
-    scandir = scandir
+    realpath = fs_realpath,
+
+    scandir = scandir,
+    stat = stat
 }
 
