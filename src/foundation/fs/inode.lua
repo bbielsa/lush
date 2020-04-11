@@ -2,8 +2,8 @@ local class = require('30log')
 
 
 local inode = class()
-function inode:__init(args)
-    self.name = args.name
+function inode:__init(nodepath, args)
+    self.path = nodepath
     
     -- stat info
     self.device = args.dev
@@ -19,6 +19,8 @@ function inode:__init(args)
     self.accesstime = args.atime
     self.modifytime = args.mtime
     self.createtime = args.ctime
+
+    self.type = args.type
 end
 
 return {
